@@ -100,9 +100,16 @@ export default function Home() {
     newDraftPerson(2),
   ]);
 
-  const loadBill = useCallback(async (id: string, personId?: string | null) => {
-    setLoading(true);
-    setError("");
+  const loadBill = useCallback(async (
+    id: string,
+    personId?: string | null,
+    options: { background?: boolean } = {},
+  ) => {
+    const background = options.background === true;
+    if (!background) {
+      setLoading(true);
+      setError("");
+    }
     try {
       const response = await fetch(`/api/bills/${encodeURIComponent(id)}`, {
         cache: "no-store",
@@ -113,10 +120,12 @@ export default function Home() {
       setSelectedPersonId(personId || null);
       setScreen("bill");
     } catch (value) {
-      setError(value instanceof Error ? value.message : "Could not load this split.");
-      setScreen("home");
+      if (!background) {
+        setError(value instanceof Error ? value.message : "Could not load this split.");
+        setScreen("home");
+      }
     } finally {
-      setLoading(false);
+      if (!background) setLoading(false);
     }
   }, []);
 
@@ -129,7 +138,10 @@ export default function Home() {
 
   useEffect(() => {
     if (screen !== "bill" || !bill) return;
-    const interval = window.setInterval(() => void loadBill(bill.id, selectedPersonId), 7_000);
+    const interval = window.setInterval(
+      () => void loadBill(bill.id, selectedPersonId, { background: true }),
+      7_000,
+    );
     return () => window.clearInterval(interval);
   }, [bill?.id, loadBill, screen, selectedPersonId]);
 
