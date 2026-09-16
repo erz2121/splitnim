@@ -2,6 +2,10 @@
 
 **Split the bill. Pay your share. Done.**
 
+## Live app
+
+Open SplitNIM: **https://splitnim-pay.dedyerzz.chatgpt.site**
+
 SplitNIM is a mobile-first Nimiq Pay Mini App for shared expenses. One person creates a bill, chooses equal or custom shares, and sends every participant a personal payment link or QR code. Each participant approves their NIM payment inside Nimiq Pay, and the settlement screen updates for the whole group.
 
 ## Why it exists
