@@ -15,7 +15,6 @@ import {
   ReceiptText,
   Share2,
   Sparkles,
-  Users,
   WalletCards,
 } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -398,11 +397,14 @@ export default function Home() {
                 <div className="progress-track"><i style={{ width: "75%" }} /></div>
               </div>
             </div>
-            <div className="feature-row">
-              <div><WalletCards size={22} /><b>Pay in NIM</b><span>Direct in Nimiq Pay</span></div>
-              <div><Users size={22} /><b>Live status</b><span>See who has settled</span></div>
-              <div><Share2 size={22} /><b>Share links</b><span>One tap per person</span></div>
-            </div>
+            <section className="how-it-works" aria-labelledby="how-it-works-title">
+              <h2 id="how-it-works-title">How it works</h2>
+              <ol>
+                <li><span>01</span><div><b>Create</b><small>Split the total</small></div></li>
+                <li><span>02</span><div><b>Share</b><small>Send personal links</small></div></li>
+                <li><span>03</span><div><b>Settle</b><small>Pay in Nimiq Pay</small></div></li>
+              </ol>
+            </section>
           </div>
         )}
 
