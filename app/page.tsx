@@ -480,7 +480,8 @@ export default function Home() {
             <button className="primary hero-action" onClick={() => navigate("create")}>
               Create a split <ArrowRight size={20} />
             </button>
-            <div className="demo-receipt" aria-label="How SplitNIM works">
+            <div className="demo-receipt" aria-label="Example SplitNIM bill">
+              <span className="example-badge">EXAMPLE SPLIT</span>
               <div className="receipt-head">
                 <div><span className="receipt-label">DINNER WITH FRIENDS</span><strong>240 NIM</strong></div>
                 <ReceiptText size={26} />
@@ -491,6 +492,7 @@ export default function Home() {
                 <div><b>3 of 4</b><span>shares paid</span></div>
                 <div className="progress-track"><i style={{ width: "75%" }} /></div>
               </div>
+              <p className="demo-note">Demo preview · No payment required</p>
             </div>
             <section className="how-it-works" aria-labelledby="how-it-works-title">
               <h2 id="how-it-works-title">How it works</h2>
