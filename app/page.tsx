@@ -9,11 +9,15 @@ import {
   ChevronRight,
   Copy,
   Loader2,
+  Mail,
+  MessageCircle,
   Minus,
+  MoreHorizontal,
   Plus,
   QrCode,
   ReceiptText,
   Share2,
+  Send,
   Sparkles,
   WalletCards,
 } from "lucide-react";
@@ -85,6 +89,7 @@ export default function Home() {
   const [payingId, setPayingId] = useState<string | null>(null);
   const [walletLoading, setWalletLoading] = useState(false);
   const [qrPerson, setQrPerson] = useState<Participant | null>(null);
+  const [sharePerson, setSharePerson] = useState<Participant | null>(null);
   const [notice, setNotice] = useState("");
   const [error, setError] = useState("");
 
@@ -268,22 +273,55 @@ export default function Home() {
   }
 
   async function copyLink(person: Participant) {
-    await navigator.clipboard.writeText(participantUrl(person));
+    const url = participantUrl(person);
+    if (navigator.clipboard?.writeText) {
+      await navigator.clipboard.writeText(url);
+    } else {
+      const textarea = document.createElement("textarea");
+      textarea.value = url;
+      textarea.style.position = "fixed";
+      textarea.style.opacity = "0";
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand("copy");
+      textarea.remove();
+    }
     setNotice(`${person.name}’s payment link copied.`);
     window.setTimeout(() => setNotice(""), 2500);
   }
 
   async function shareLink(person: Participant) {
     const url = participantUrl(person);
+    const shareData = {
+      title: `${bill!.title} · SplitNIM`,
+      text: `${person.name}, your share is ${nim(person.amountLuna)} NIM.`,
+      url,
+    };
     if (navigator.share) {
-      await navigator.share({
-        title: `${bill!.title} · SplitNIM`,
-        text: `${person.name}, your share is ${nim(person.amountLuna)} NIM.`,
-        url,
-      });
-    } else {
-      await copyLink(person);
+      try {
+        await navigator.share(shareData);
+        setNotice(`${person.name}’s payment link shared.`);
+        window.setTimeout(() => setNotice(""), 2500);
+        return;
+      } catch {
+        // Fall back to copying when the native share sheet is unavailable.
+      }
     }
+
+    await copyLink(person);
+  }
+
+  function shareMessage(person: Participant) {
+    return `${person.name}, your share for ${bill!.title} is ${nim(person.amountLuna)} NIM.`;
+  }
+
+  function shareHref(service: "whatsapp" | "telegram" | "email" | "x", person: Participant) {
+    const url = participantUrl(person);
+    const message = shareMessage(person);
+    if (service === "whatsapp") return `https://wa.me/?text=${encodeURIComponent(`${message}\n${url}`)}`;
+    if (service === "telegram") return `https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(message)}`;
+    if (service === "email") return `mailto:?subject=${encodeURIComponent(`${bill!.title} · SplitNIM`)}&body=${encodeURIComponent(`${message}\n\n${url}`)}`;
+    return `https://twitter.com/intent/tweet?text=${encodeURIComponent(message)}&url=${encodeURIComponent(url)}`;
   }
 
   async function payShare(person: Participant) {
@@ -516,9 +554,9 @@ export default function Home() {
                   <strong>{nim(person.amountLuna)} NIM</strong>
                   {!activePerson && person.status === "pending" && (
                     <div className="row-actions">
-                      <button aria-label={`Copy ${person.name}'s link`} onClick={() => void copyLink(person)}><Copy size={16} /></button>
-                      <button aria-label={`Show ${person.name}'s QR code`} onClick={() => setQrPerson(person)}><QrCode size={16} /></button>
-                      <button aria-label={`Share ${person.name}'s link`} onClick={() => void shareLink(person)}><Share2 size={16} /></button>
+                      <button title="Copy link" aria-label={`Copy ${person.name}'s link`} onClick={() => void copyLink(person)}><Copy size={16} /></button>
+                      <button title="Show QR code" aria-label={`Show ${person.name}'s QR code`} onClick={() => setQrPerson(person)}><QrCode size={16} /></button>
+                      <button title="Share link" aria-label={`Share ${person.name}'s link`} onClick={() => setSharePerson(person)}><Share2 size={16} /></button>
                     </div>
                   )}
                   {!activePerson && person.status === "paid" && person.txHash && <span className="tx-check" title={person.txHash}><CheckCircle2 size={18} /></span>}
@@ -560,6 +598,26 @@ export default function Home() {
                 <Copy size={17} /> Copy payment link
               </button>
             </>
+          )}
+        </DialogContent>
+      </Dialog>
+      <Dialog open={Boolean(sharePerson)} onOpenChange={(open) => !open && setSharePerson(null)}>
+        <DialogContent className="share-dialog">
+          <DialogHeader>
+            <DialogTitle>Share {sharePerson?.name}&apos;s payment link</DialogTitle>
+            <DialogDescription>
+              Send the personal link through the app you prefer.
+            </DialogDescription>
+          </DialogHeader>
+          {sharePerson && bill && (
+            <div className="share-options">
+              <a href={shareHref("whatsapp", sharePerson)} target="_blank" rel="noreferrer"><MessageCircle size={20} /><span>WhatsApp</span></a>
+              <a href={shareHref("telegram", sharePerson)} target="_blank" rel="noreferrer"><Send size={20} /><span>Telegram</span></a>
+              <a href={shareHref("email", sharePerson)}><Mail size={20} /><span>Email</span></a>
+              <a href={shareHref("x", sharePerson)} target="_blank" rel="noreferrer"><span className="x-mark">X</span><span>X</span></a>
+              <button onClick={() => void copyLink(sharePerson)}><Copy size={20} /><span>Copy link</span></button>
+              <button onClick={() => void shareLink(sharePerson)}><MoreHorizontal size={20} /><span>More apps</span></button>
+            </div>
           )}
         </DialogContent>
       </Dialog>
