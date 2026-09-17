@@ -362,15 +362,37 @@ export default function Home() {
             : "Payment failed.";
         throw new Error(message);
       }
-      const response = await fetch(`/api/bills/${encodeURIComponent(bill.id)}/pay`, {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({ participantId: person.id, txHash: result }),
-      });
-      const data = (await response.json()) as { bill?: Bill; error?: string };
-      if (!response.ok || !data.bill) throw new Error(data.error || "Payment sent, but status could not update.");
-      setBill(data.bill);
-      setNotice("Payment sent. Your share is settled!");
+      let network: "testnet" | "mainnet" | undefined;
+      try {
+        const info = await nimiq.request<{ data?: { networkId?: number }; networkId?: number }>({
+          method: "getTransactionByHash",
+          params: [result],
+        });
+        const networkId = info?.data?.networkId ?? info?.networkId;
+        if (networkId === 5) network = "testnet";
+        else if (typeof networkId === "number") network = "mainnet";
+      } catch {
+        // The server checks both Nimiq networks when the wallet cannot provide a hint.
+      }
+
+      for (let attempt = 0; attempt < 8; attempt += 1) {
+        const response = await fetch(`/api/bills/${encodeURIComponent(bill.id)}/pay`, {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({ participantId: person.id, txHash: result, network }),
+        });
+        const data = (await response.json()) as { bill?: Bill; error?: string; pending?: boolean };
+        if (response.status === 202 && data.pending) {
+          setNotice("Payment sent. Waiting for blockchain confirmation…");
+          await new Promise((resolve) => window.setTimeout(resolve, 2_000));
+          continue;
+        }
+        if (!response.ok || !data.bill) throw new Error(data.error || "Payment sent, but status could not update.");
+        setBill(data.bill);
+        setNotice("Payment verified on-chain. Your share is settled!");
+        return;
+      }
+      throw new Error("Payment was sent, but confirmation is taking longer than expected. Reopen this link shortly.");
     } catch (value) {
       const message = value instanceof Error ? value.message : "Payment could not be completed.";
       if (/timeout|provider|injected/i.test(message)) {
