@@ -92,6 +92,7 @@ export default function Home() {
   const [walletLoading, setWalletLoading] = useState(false);
   const [qrPerson, setQrPerson] = useState<Participant | null>(null);
   const [sharePerson, setSharePerson] = useState<Participant | null>(null);
+  const [showExtraShareOptions, setShowExtraShareOptions] = useState(false);
   const [theme, setTheme] = useState<"light" | "dark">("light");
   const [notice, setNotice] = useState("");
   const [error, setError] = useState("");
@@ -309,7 +310,7 @@ export default function Home() {
     window.setTimeout(() => setNotice(""), 2500);
   }
 
-  async function shareLink(person: Participant) {
+  async function shareMore(person: Participant) {
     const url = participantUrl(person);
     const shareData = {
       title: `${bill!.title} · SplitNIM`,
@@ -321,13 +322,13 @@ export default function Home() {
         await navigator.share(shareData);
         setNotice(`${person.name}’s payment link shared.`);
         window.setTimeout(() => setNotice(""), 2500);
+        setSharePerson(null);
         return;
-      } catch {
-        // Fall back to copying when the native share sheet is unavailable.
+      } catch (value) {
+        if (value instanceof DOMException && value.name === "AbortError") return;
       }
     }
-
-    await copyLink(person);
+    setShowExtraShareOptions(true);
   }
 
   function shareMessage(person: Participant) {
@@ -341,6 +342,14 @@ export default function Home() {
     if (service === "telegram") return `https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(message)}`;
     if (service === "email") return `mailto:?subject=${encodeURIComponent(`${bill!.title} · SplitNIM`)}&body=${encodeURIComponent(`${message}\n\n${url}`)}`;
     return `https://twitter.com/intent/tweet?text=${encodeURIComponent(message)}&url=${encodeURIComponent(url)}`;
+  }
+
+  function extraShareHref(service: "facebook" | "line" | "sms", person: Participant) {
+    const url = participantUrl(person);
+    const message = `${shareMessage(person)}\n${url}`;
+    if (service === "facebook") return `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
+    if (service === "line") return `https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(url)}`;
+    return `sms:?body=${encodeURIComponent(message)}`;
   }
 
   async function payShare(person: Participant) {
@@ -658,7 +667,12 @@ export default function Home() {
           )}
         </DialogContent>
       </Dialog>
-      <Dialog open={Boolean(sharePerson)} onOpenChange={(open) => !open && setSharePerson(null)}>
+      <Dialog open={Boolean(sharePerson)} onOpenChange={(open) => {
+        if (!open) {
+          setSharePerson(null);
+          setShowExtraShareOptions(false);
+        }
+      }}>
         <DialogContent className="share-dialog">
           <DialogHeader>
             <DialogTitle>Share {sharePerson?.name}&apos;s payment link</DialogTitle>
@@ -673,7 +687,15 @@ export default function Home() {
               <a href={shareHref("email", sharePerson)}><Mail size={20} /><span>Email</span></a>
               <a href={shareHref("x", sharePerson)} target="_blank" rel="noreferrer"><span className="x-mark">X</span><span>X</span></a>
               <button onClick={() => void copyLink(sharePerson)}><Copy size={20} /><span>Copy link</span></button>
-              <button onClick={() => void shareLink(sharePerson)}><MoreHorizontal size={20} /><span>More apps</span></button>
+              <button onClick={() => void shareMore(sharePerson)}><MoreHorizontal size={20} /><span>More apps</span></button>
+              {showExtraShareOptions && (
+                <>
+                  <p className="share-fallback-note">The device share menu is unavailable here. Choose another app:</p>
+                  <a href={extraShareHref("facebook", sharePerson)} target="_blank" rel="noreferrer"><span className="share-brand">f</span><span>Facebook</span></a>
+                  <a href={extraShareHref("line", sharePerson)} target="_blank" rel="noreferrer"><span className="share-brand line">LINE</span><span>LINE</span></a>
+                  <a href={extraShareHref("sms", sharePerson)}><MessageCircle size={20} /><span>SMS</span></a>
+                </>
+              )}
             </div>
           )}
         </DialogContent>
