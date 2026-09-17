@@ -12,6 +12,7 @@ import {
   Mail,
   MessageCircle,
   Minus,
+  Moon,
   MoreHorizontal,
   Plus,
   QrCode,
@@ -19,6 +20,7 @@ import {
   Share2,
   Send,
   Sparkles,
+  Sun,
   WalletCards,
 } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -90,6 +92,7 @@ export default function Home() {
   const [walletLoading, setWalletLoading] = useState(false);
   const [qrPerson, setQrPerson] = useState<Participant | null>(null);
   const [sharePerson, setSharePerson] = useState<Participant | null>(null);
+  const [theme, setTheme] = useState<"light" | "dark">("light");
   const [notice, setNotice] = useState("");
   const [error, setError] = useState("");
 
@@ -103,6 +106,22 @@ export default function Home() {
     newDraftPerson(1),
     newDraftPerson(2),
   ]);
+
+  useEffect(() => {
+    const saved = window.localStorage.getItem("splitnim-theme");
+    const nextTheme = saved === "dark" || saved === "light"
+      ? saved
+      : window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    setTheme(nextTheme);
+    document.documentElement.dataset.theme = nextTheme;
+  }, []);
+
+  function toggleTheme() {
+    const nextTheme = theme === "dark" ? "light" : "dark";
+    setTheme(nextTheme);
+    document.documentElement.dataset.theme = nextTheme;
+    window.localStorage.setItem("splitnim-theme", nextTheme);
+  }
 
   const loadBill = useCallback(async (
     id: string,
@@ -420,7 +439,12 @@ export default function Home() {
             </span>
             <span>SplitNIM</span>
           </button>
-          <span className="network-pill"><i /> Nimiq Pay</span>
+          <div className="topbar-actions">
+            <span className="network-pill"><i /> Nimiq Pay</span>
+            <button type="button" className="theme-toggle" onClick={toggleTheme} aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`} title={`${theme === "dark" ? "Light" : "Dark"} mode`}>
+              {theme === "dark" ? <Sun size={17} /> : <Moon size={17} />}
+            </button>
+          </div>
         </header>
 
         {screen === "home" && (
