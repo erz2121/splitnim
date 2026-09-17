@@ -151,8 +151,11 @@ export default function Home() {
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    const billId = params.get("bill");
-    if (billId) void loadBill(billId, params.get("person"));
+    const compactPayment = params.get("pay");
+    const [compactBillId, compactPersonId] = compactPayment?.split("|") || [];
+    const billId = compactBillId || params.get("bill");
+    const personId = compactPersonId || params.get("person");
+    if (billId) void loadBill(billId, personId);
     else setLoading(false);
   }, [loadBill]);
 
@@ -283,8 +286,7 @@ export default function Home() {
   function participantUrl(person: Participant) {
     const url = new URL(window.location.href);
     url.search = "";
-    url.searchParams.set("bill", bill!.id);
-    url.searchParams.set("person", person.id);
+    url.searchParams.set("pay", `${bill!.id}|${person.id}`);
     return url.toString();
   }
 
@@ -401,8 +403,8 @@ export default function Home() {
     } catch (value) {
       const message = value instanceof Error ? value.message : "Payment could not be completed.";
       if (/timeout|provider|injected/i.test(message)) {
-        const target = `${window.location.host}${window.location.pathname}${window.location.search}`;
-        window.location.href = `nimiqpay://miniapp?url=${encodeURIComponent(target)}`;
+        const target = participantUrl(person).replace(/^https?:\/\//, "");
+        window.location.href = `nimiqpay://miniapp?url=${target}`;
         return;
       }
       setError(message);
