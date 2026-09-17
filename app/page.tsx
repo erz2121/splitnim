@@ -476,13 +476,25 @@ export default function Home() {
             <button className="primary hero-action" onClick={() => navigate("create")}>
               Create a split <ArrowRight size={20} />
             </button>
-            <figure className="dinner-visual">
-              <img
-                src="/images/dinner-split.webp"
-                alt="A shared dinner table with a phone ready for a simple payment"
-                fetchPriority="high"
-              />
-            </figure>
+            <div className="transfer-visual" aria-label="SplitNIM payment flow">
+              <div className="transfer-orbit transfer-orbit-one" />
+              <div className="transfer-orbit transfer-orbit-two" />
+              <div className="transfer-node split-node">
+                <img src="/favicon-new.svg" alt="" />
+              </div>
+              <div className="transfer-route" aria-hidden="true">
+                <i /><i /><i />
+                <span><Send size={22} strokeWidth={2.4} /></span>
+                <i /><i /><i />
+              </div>
+              <div className="transfer-node settled-node">
+                <Check size={27} strokeWidth={2.8} />
+              </div>
+              <div className="transfer-caption">
+                <b>Split. Share. Settled.</b>
+                <span>One simple payment flow</span>
+              </div>
+            </div>
             <section className="how-it-works" aria-labelledby="how-it-works-title">
               <h2 id="how-it-works-title">How it works</h2>
               <ol>
