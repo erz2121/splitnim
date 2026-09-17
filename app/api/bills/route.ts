@@ -42,8 +42,8 @@ export async function POST(request: Request) {
     if (!recipientAddress) {
       return Response.json({ error: "Enter a valid Nimiq address beginning with NQ." }, { status: 400 });
     }
-    if (participants.length < 2 || participants.length > 12) {
-      return Response.json({ error: "A split needs between 2 and 12 people." }, { status: 400 });
+    if (participants.length < 1 || participants.length > 12) {
+      return Response.json({ error: "A split needs between 1 and 12 people." }, { status: 400 });
     }
 
     const cleanParticipants = participants.map((person) => ({
