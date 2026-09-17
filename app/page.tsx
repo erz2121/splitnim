@@ -402,7 +402,7 @@ export default function Home() {
       const message = value instanceof Error ? value.message : "Payment could not be completed.";
       if (/timeout|provider|injected/i.test(message)) {
         const target = `${window.location.host}${window.location.pathname}${window.location.search}`;
-        window.location.href = `https://nimpay.app/miniapps/open/${target}`;
+        window.location.href = `nimiqpay://miniapp?url=${encodeURIComponent(target)}`;
         return;
       }
       setError(message);
