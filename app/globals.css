@@ -228,6 +228,9 @@ footer { position: relative; text-align: center; color: #74809a; font-size: .72r
 .share-options svg, .share-options .x-mark { color: #1f4bff; }
 .share-options span { font-size: .75rem; font-weight: 800; }
 .share-options .x-mark { font-size: 1rem; font-weight: 900; }
+.share-fallback-note { grid-column: 1 / -1; margin: 4px 2px 0; color: #6f7b93; font-size: .72rem; line-height: 1.45; text-align: center; }
+.share-options .share-brand { color: #1f4bff; font-size: 1.15rem; font-weight: 900; line-height: 1; }
+.share-options .share-brand.line { font-size: .65rem; letter-spacing: -.02em; }
 
 html[data-theme="dark"] body { background: #071027; }
 html[data-theme="dark"] .ambient-one { background: #574c12; opacity: .42; }
@@ -276,6 +279,7 @@ html[data-theme="dark"] .share-options button,
 html[data-theme="dark"] .share-options a { color: #edf2ff; background: #14213d; border-color: #30405f; }
 html[data-theme="dark"] .share-options button:hover,
 html[data-theme="dark"] .share-options a:hover { background: #1a2949; border-color: #4a5e86; box-shadow: none; }
+html[data-theme="dark"] .share-fallback-note { color: #9ca8bf; }
 html[data-theme="dark"] .success-toast { color: #7de1b4; background: #0c2c25; border-color: #18513f; }
 html[data-theme="dark"] .error-banner { color: #ff9eb6; background: #321526; border-color: #603049; }
 html[data-theme="dark"] .paid-banner { color: #7de1b4; background: #0c2c25; border-color: #18513f; }
