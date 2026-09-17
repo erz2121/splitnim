@@ -90,7 +90,7 @@ button:focus-visible, input:focus-visible { outline: 3px solid rgba(31,75,255,.2
 .theme-toggle:hover { transform: translateY(-1px); background: #f3f6ff; }
 .screen { padding: 34px 28px 30px; animation: rise .45s cubic-bezier(.2,.8,.2,1); }
 @keyframes rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
-.home-screen h1 { margin: 16px 0; font-size: clamp(2.6rem, 10vw, 4.1rem); letter-spacing: -.075em; line-height: .92; font-weight: 900; }
+.home-screen h1 { margin: 16px 0; font-size: clamp(2.6rem, 10vw, 4.1rem); letter-spacing: -.055em; line-height: .98; font-weight: 900; }
 .home-screen h1 span { color: #1f4bff; }
 .eyebrow { display: inline-flex; align-items: center; gap: 7px; color: #455577; font-size: .78rem; letter-spacing: .09em; text-transform: uppercase; font-weight: 850; }
 .lead { color: #5b6782; font-size: 1.02rem; line-height: 1.6; margin: 0 0 24px; max-width: 410px; }
