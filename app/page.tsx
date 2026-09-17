@@ -429,13 +429,7 @@ export default function Home() {
         <header className="topbar">
           <button className="brand" onClick={() => navigate("home")} aria-label="Go to SplitNIM home">
             <span className="brand-mark" aria-hidden="true">
-              <svg viewBox="0 0 40 40" role="presentation">
-                <path className="brand-link" d="M20 20 12.5 12.5M20 20l7.5-7.5M20 20v9" />
-                <circle className="brand-node" cx="12.5" cy="12.5" r="3.4" />
-                <circle className="brand-node" cx="27.5" cy="12.5" r="3.4" />
-                <circle className="brand-node" cx="20" cy="29" r="3.4" />
-                <circle className="brand-core" cx="20" cy="20" r="4.2" />
-              </svg>
+              <img src="/favicon-new.svg" alt="" />
             </span>
             <span>SplitNIM</span>
           </button>
