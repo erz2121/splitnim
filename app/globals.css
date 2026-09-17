@@ -199,6 +199,13 @@ footer { position: relative; text-align: center; color: #74809a; font-size: .72r
 .qr-person { display: flex; justify-content: space-between; align-items: center; padding: 2px 3px; }
 .qr-person span { color: #65708c; font-size: .86rem; }
 .qr-person strong { color: #1f4bff; }
+.share-dialog { max-width: 390px !important; border-radius: 24px !important; padding: 24px !important; border-color: #dce3f1 !important; background: #f8faff !important; color: #0a1738 !important; }
+.share-options { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.share-options a, .share-options button { min-height: 84px; padding: 12px 8px; border: 1px solid #dce3f1; border-radius: 16px; background: #fff; color: #0a1738; display: grid; place-items: center; align-content: center; gap: 7px; font: inherit; text-decoration: none; cursor: pointer; transition: border-color .18s ease, transform .18s ease, box-shadow .18s ease; }
+.share-options a:hover, .share-options button:hover { transform: translateY(-2px); border-color: #1f4bff; box-shadow: 0 8px 22px rgba(31,75,255,.1); }
+.share-options svg, .share-options .x-mark { color: #1f4bff; }
+.share-options span { font-size: .75rem; font-weight: 800; }
+.share-options .x-mark { font-size: 1rem; font-weight: 900; }
 
 @media (max-width: 560px) {
   .app-shell { padding: 0; }
