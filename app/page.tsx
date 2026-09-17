@@ -476,6 +476,13 @@ export default function Home() {
             <button className="primary hero-action" onClick={() => navigate("create")}>
               Create a split <ArrowRight size={20} />
             </button>
+            <figure className="dinner-visual">
+              <img
+                src="/images/dinner-split.webp"
+                alt="A shared dinner table with a phone ready for a simple payment"
+                fetchPriority="high"
+              />
+            </figure>
             <section className="how-it-works" aria-labelledby="how-it-works-title">
               <h2 id="how-it-works-title">How it works</h2>
               <ol>
