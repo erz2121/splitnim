@@ -438,9 +438,18 @@ export default function Home() {
             <section className="how-it-works" aria-labelledby="how-it-works-title">
               <h2 id="how-it-works-title">How it works</h2>
               <ol>
-                <li><span>01</span><div><b>Create</b><small>Split the total</small></div></li>
-                <li><span>02</span><div><b>Share</b><small>Send personal links</small></div></li>
-                <li><span>03</span><div><b>Settle</b><small>Pay in Nimiq Pay</small></div></li>
+                <li>
+                  <span className="work-icon"><ReceiptText size={21} strokeWidth={2.2} /></span>
+                  <div><b>Create</b><small>Split the total</small></div>
+                </li>
+                <li>
+                  <span className="work-icon"><Share2 size={21} strokeWidth={2.2} /></span>
+                  <div><b>Share</b><small>Send personal links</small></div>
+                </li>
+                <li>
+                  <span className="work-icon"><CheckCircle2 size={21} strokeWidth={2.2} /></span>
+                  <div><b>Settle</b><small>Pay in Nimiq Pay</small></div>
+                </li>
               </ol>
             </section>
           </div>
