@@ -98,29 +98,9 @@ button:focus-visible, input:focus-visible { outline: 3px solid rgba(31,75,255,.2
 .primary:hover { transform: translateY(-2px); box-shadow: 0 14px 28px rgba(31,75,255,.28), inset 0 -2px 0 rgba(5,19,78,.22); }
 .primary:disabled { opacity: .64; cursor: wait; transform: none; }
 .hero-action { width: 100%; font-size: 1rem; }
-.demo-receipt { margin-top: 28px; border-radius: 24px; padding: 24px; color: #fff; background: #0a1738; box-shadow: 0 20px 40px rgba(10,23,56,.16); position: relative; overflow: hidden; }
-.demo-receipt::after { content: ""; position: absolute; width: 150px; height: 150px; border-radius: 50%; border: 34px solid rgba(255,242,88,.13); right: -60px; top: -62px; }
-.example-badge { display: inline-flex; position: relative; z-index: 1; margin-bottom: 13px; padding: 5px 8px; border-radius: 7px; color: #0a1738; background: #fff258; font-size: .61rem; font-weight: 900; letter-spacing: .11em; }
-.receipt-head { display: flex; align-items: center; justify-content: space-between; position: relative; z-index: 1; }
-.receipt-head div { display: grid; gap: 5px; }
-.receipt-label { font-size: .69rem; letter-spacing: .13em; font-weight: 850; color: #7c89a5; }
-.receipt-head .receipt-label { color: #a9b5cf; }
-.receipt-head strong { font-size: 1.7rem; letter-spacing: -.04em; }
-.receipt-divider { border-top: 1px dashed rgba(255,255,255,.25); margin: 20px 0; }
-.people-stack { display: flex; }
-.people-stack span { width: 36px; height: 36px; display: grid; place-items: center; margin-right: -7px; border: 2px solid #0a1738; border-radius: 50%; background: #fff258; color: #0a1738; font-size: .67rem; font-weight: 900; }
-.people-stack span:nth-child(2) { background: #85a5ff; }
-.people-stack span:nth-child(3) { background: #ff9ec3; }
-.people-stack span:nth-child(4) { background: #fff; }
-.receipt-progress { display: grid; grid-template-columns: auto 1fr; gap: 15px; align-items: center; margin-top: 18px; }
-.receipt-progress div:first-child { display: grid; }
-.receipt-progress b { font-size: .9rem; }
-.receipt-progress span { color: #aab5cc; font-size: .7rem; }
 .progress-track { height: 8px; border-radius: 99px; background: #e2e7f2; overflow: hidden; }
-.demo-receipt .progress-track { background: rgba(255,255,255,.14); }
-.demo-note { position: relative; z-index: 1; margin: 16px 0 0; padding-top: 13px; border-top: 1px solid rgba(255,255,255,.12); color: #aab5cc; font-size: .7rem; font-weight: 650; }
 .progress-track i { display: block; height: 100%; border-radius: inherit; background: #fff258; transition: width .5s ease; }
-.how-it-works { margin-top: 20px; }
+.how-it-works { margin-top: 30px; }
 .how-it-works h2 { margin: 0 0 11px; color: #77829a; font-size: .72rem; font-weight: 850; letter-spacing: .12em; text-transform: uppercase; }
 .how-it-works ol { display: grid; grid-template-columns: repeat(3, 1fr); gap: 9px; margin: 0; padding: 0; list-style: none; }
 .how-it-works li { min-width: 0; min-height: 118px; padding: 14px 11px 12px; display: flex; flex-direction: column; align-items: flex-start; gap: 10px; border: 1px solid #dfe5f3; border-radius: 17px; background: #fbfcff; box-shadow: 0 6px 18px rgba(20,42,100,.05); }
