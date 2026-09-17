@@ -102,11 +102,7 @@ export default function Home() {
   const [recipientAddress, setRecipientAddress] = useState("");
   const [consent, setConsent] = useState(false);
   const [splitMode, setSplitMode] = useState<"equal" | "custom">("equal");
-  const [people, setPeople] = useState<DraftPerson[]>([
-    newDraftPerson(0),
-    newDraftPerson(1),
-    newDraftPerson(2),
-  ]);
+  const [people, setPeople] = useState<DraftPerson[]>([newDraftPerson(0)]);
 
   useEffect(() => {
     const saved = window.localStorage.getItem("splitnim-theme");
@@ -230,8 +226,8 @@ export default function Home() {
       setError("Add a title, total amount, and your receiving Nimiq address.");
       return;
     }
-    if (namedPeople.length < 2) {
-      setError("Add at least two people to split the bill.");
+    if (namedPeople.length < 1) {
+      setError("Add at least one person to receive a payment link.");
       return;
     }
     if (!consent) {
@@ -480,20 +476,6 @@ export default function Home() {
             <button className="primary hero-action" onClick={() => navigate("create")}>
               Create a split <ArrowRight size={20} />
             </button>
-            <div className="demo-receipt" aria-label="Example SplitNIM bill">
-              <span className="example-badge">EXAMPLE SPLIT</span>
-              <div className="receipt-head">
-                <div><span className="receipt-label">DINNER WITH FRIENDS</span><strong>240 NIM</strong></div>
-                <ReceiptText size={26} />
-              </div>
-              <div className="receipt-divider" />
-              <div className="people-stack"><span>DI</span><span>RI</span><span>AN</span><span>+1</span></div>
-              <div className="receipt-progress">
-                <div><b>3 of 4</b><span>shares paid</span></div>
-                <div className="progress-track"><i style={{ width: "75%" }} /></div>
-              </div>
-              <p className="demo-note">Demo preview · No payment required</p>
-            </div>
             <section className="how-it-works" aria-labelledby="how-it-works-title">
               <h2 id="how-it-works-title">How it works</h2>
               <ol>
@@ -558,7 +540,7 @@ export default function Home() {
                   {splitMode === "custom" && (
                     <div className="mini-amount"><input inputMode="decimal" value={person.amount} onChange={(event) => updatePerson(person.id, "amount", event.target.value)} placeholder="0" /><b>NIM</b></div>
                   )}
-                  {people.length > 2 && <button type="button" aria-label={`Remove person ${index + 1}`} onClick={() => setPeople((current) => current.filter((item) => item.id !== person.id))}><Minus size={17} /></button>}
+                  {people.length > 1 && <button type="button" aria-label={`Remove person ${index + 1}`} onClick={() => setPeople((current) => current.filter((item) => item.id !== person.id))}><Minus size={17} /></button>}
                 </div>
               ))}
               {people.length < 12 && (
