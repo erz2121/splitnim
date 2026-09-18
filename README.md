@@ -11,7 +11,7 @@ SplitNIM is a mobile-first Nimiq Pay Mini App for splitting shared expenses and 
 Splitting a restaurant bill, trip, event, or shared purchase often means calculating every share manually, copying a wallet address, and sending screenshots as proof. SplitNIM replaces that fragmented process with one simple flow:
 
 1. Create a shared bill.
-2. Add 2–12 participants.
+2. Add 1–12 participants.
 3. Divide the total equally or enter custom shares.
 4. Share each participant's personal link or QR code.
 5. Pay the exact share in Nimiq Pay.
